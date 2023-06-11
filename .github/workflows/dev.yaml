@@ -9,8 +9,6 @@ permissions:
 jobs: 
   plan:
     name: Plan
-    env:
-      TF_VAR_allowed_account_id: ${{ secrets.ALLOWED_ACCOUNT_ID }}
     runs-on: ubuntu-20.04
     steps:
       - name: Check out code
@@ -30,9 +28,15 @@ jobs:
       - name: Sts GetCallerIdentity
         run: |
           aws sts get-caller-identity
+  
+      - name: "Get Application Token"
+        id: get_app_token
+        uses: tibdex/github-app-token@v1
+        with:
+         app_id: ${{ secrets.EKS_DEV_APP_CLIENTID  }}
+         private_key: ${{ secrets.EKS_DEV_APP_SECRET }}
 
-      - name: Initialize Terraform
-        run: |
-          aws s3 ls 
-          cd terraform/${{ matrix.path }}
-          terraform init -input=false          
+      - name: Extend Git credentials
+        uses: de-vri-es/setup-git-credentials@v2.0.10
+        with:
+         credentials: https://user:${{ steps.get_app_token.outputs.token }}@github.com   
