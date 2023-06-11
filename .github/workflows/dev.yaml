@@ -1,17 +1,6 @@
-# .github/workflows/staging.yaml
-name: 'Terraform - Staging'
-
-on:
-  push:
-    branches:
-    - main
-    paths: 
-    - eks-dev/**
-  pull_request:
-    branches:
-    - main
-    paths: 
-    - eks-dev/**
+# .github/workflows/dev.yaml
+name: 'Terraform - eks-dev'
+on: [workflow_dispatch]
 
 permissions:
   contents: read
