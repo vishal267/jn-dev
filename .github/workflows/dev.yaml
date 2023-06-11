@@ -3,8 +3,8 @@ name: 'Terraform - eks-dev'
 on: [workflow_dispatch]
 
 permissions:
+  id-token: write # need this for OIDC  
   contents: read
-  pull-requests: write
 
 jobs: 
   plan:
@@ -35,4 +35,4 @@ jobs:
         run: |
           aws s3 ls 
           cd terraform/${{ matrix.path }}
-          terraform init -input=false
+          terraform init -input=false          
