@@ -7,11 +7,17 @@ permissions:
   pull-requests: write
 
 jobs: 
-  terraform:
-    runs-on: ubuntu-latest
-    name: Terraform
-    environment: dev 
+  plan:
+    name: Plan
+    env:
+      TF_VAR_allowed_account_id: ${{ secrets.ALLOWED_ACCOUNT_ID }}
+    runs-on: ubuntu-20.04
     steps:
-      - uses: hashicorp/setup-terraform@v2
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          terraform-version: 1.2.4
+          terraform_version: 1.2.4
+      
