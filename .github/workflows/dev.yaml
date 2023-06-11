@@ -1,0 +1,36 @@
+# .github/workflows/staging.yaml
+name: 'Terraform - Staging'
+
+on:
+  push:
+    branches:
+    - main
+    paths: 
+    - eks-dev/**
+  pull_request:
+    branches:
+    - main
+    paths: 
+    - eks-dev/**
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs: 
+  terraform:
+    runs-on: ubuntu-latest
+    name: Terraform
+    environment: staging 
+    steps:
+      - uses: actions/checkout@v3
+      - uses: boxboat/terraform-azure-actions@v1.0.0
+        with:
+          client-id: '<< service principal client id >>'
+          client-secret: ${{ secrets.CLIENT_SECRET }}
+          default-subscription-id: '<< some subscription id >>'
+          tenant-id: '<< some aad tenant id >>'
+          working-directory: './staging'
+          plan-title: 'Staging :star:'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          terraform-version: 1.1.9
