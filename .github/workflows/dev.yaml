@@ -10,16 +10,8 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     name: Terraform
-    environment: staging 
+    environment: dev 
     steps:
-      - uses: actions/checkout@v3
-      - uses: boxboat/terraform-azure-actions@v1.0.0
+      - uses: hashicorp/setup-terraform@v2
         with:
-          client-id: '<< service principal client id >>'
-          client-secret: ${{ secrets.CLIENT_SECRET }}
-          default-subscription-id: '<< some subscription id >>'
-          tenant-id: '<< some aad tenant id >>'
-          working-directory: './staging'
-          plan-title: 'Staging :star:'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          terraform-version: 1.1.9
+          terraform-version: 1.2.4
